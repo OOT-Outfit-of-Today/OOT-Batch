@@ -1,34 +1,34 @@
-spring:
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: none   # dev 환경에서도 스키마 변경 금지
-    properties:
-      hibernate:
-        format_sql: true
-
-  batch:
-    jdbc:
-      initialize-schema: always    # schema.sql로 메타테이블 초기화
-  sql:
-    init:
-      mode: always
-
-
-  data:
-    redis:
-      host: ${REDIS_HOST:127.0.0.1}
-      port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD}
-      timeout: 3000ms
-      lettuce:
-        pool:
-          max-active: 10
-          max-idle: 10
-          min-idle: 2
-          max-wait: -1ms
+#spring:
+#  datasource:
+#    url: ${DB_URL}
+#    username: ${DB_USERNAME}
+#    password: ${DB_PASSWORD}
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: none   # dev 환경에서도 스키마 변경 금지
+#    properties:
+#      hibernate:
+#        format_sql: true
+#
+#  batch:
+#    jdbc:
+#      initialize-schema: always    # schema.sql로 메타테이블 초기화
+#  sql:
+#    init:
+#      mode: always
+#
+#
+#  data:
+#    redis:
+#      host: ${REDIS_HOST:127.0.0.1}
+#      port: ${REDIS_PORT:6379}
+#      password: ${REDIS_PASSWORD}
+#      timeout: 3000ms
+#      lettuce:
+#        pool:
+#          max-active: 10
+#          max-idle: 10
+#          min-idle: 2
+#          max-wait: -1ms
