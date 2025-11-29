@@ -117,7 +117,7 @@ jobs:
       # --stacktrace: 오류 발생 시 상세한 스택 트레이스 출력
       - name: Run tests
         run: ./gradlew test --stacktrace
-              env:
+      env:
         SPRING_PROFILES_ACTIVE: test
         DB_HOST: localhost
         DB_PORT: 3306
