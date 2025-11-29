@@ -118,12 +118,12 @@ jobs:
       - name: Run tests
         run: ./gradlew test --stacktrace
       env:
-        SPRING_PROFILES_ACTIVE: test
-        DB_HOST: localhost
-        DB_PORT: 3306
-        DB_NAME: test_db
-        DB_USERNAME: root
-        DB_PASSWORD: root
-        REDIS_HOST: localhost
-        REDIS_PORT: 6379
-        REDIS_PASSWORD: ""
+            SPRING_PROFILES_ACTIVE: test
+            DB_HOST: localhost
+            DB_PORT: 3306
+            DB_NAME: test_db
+            DB_USERNAME: root
+            DB_PASSWORD: root
+            REDIS_HOST: localhost
+            REDIS_PORT: 6379
+            REDIS_PASSWORD: ""
