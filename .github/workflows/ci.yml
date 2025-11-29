@@ -35,17 +35,14 @@ jobs:
     services:
       # MySQL 데이터베이스 서비스
       mysql:
-        image: mysql:8.0  # MySQL 8.0 이미지 사용
+        image: mysql:8.0
         env:
-          # MySQL 루트 비밀번호 설정
           MYSQL_ROOT_PASSWORD: root
-          # 테스트용 데이터베이스 자동 생성
           MYSQL_DATABASE: test_db
         ports:
-          # 호스트의 3306 포트를 컨테이너의 3306 포트와 매핑
           - 3306:3306
+        # Health Check 옵션: MySQL이 완전히 시작될 때까지 대기
         options: >-
-          # Health Check: MySQL이 완전히 시작될 때까지 대기
           --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
           --health-timeout=5s
@@ -53,12 +50,11 @@ jobs:
       
       # Redis 캐시 서비스
       redis:
-        image: redis:7-alpine  # 경량화된 Redis 7 Alpine 이미지 사용
+        image: redis:7-alpine
         ports:
-          # 호스트의 6379 포트를 컨테이너의 6379 포트와 매핑
           - 6379:6379
+        # Health Check 옵션: Redis가 완전히 시작될 때까지 대기
         options: >-
-          # Health Check: Redis가 완전히 시작될 때까지 대기
           --health-cmd="redis-cli ping"
           --health-interval=5s
           --health-timeout=3s
@@ -97,13 +93,11 @@ jobs:
       - name: Configure environment variables
         run: |
           echo "SPRING_PROFILES_ACTIVE=test" >> $GITHUB_ENV
-          # MySQL 연결 정보 (localhost 사용!)
           echo "DB_HOST=localhost" >> $GITHUB_ENV
           echo "DB_PORT=3306" >> $GITHUB_ENV
           echo "DB_NAME=test_db" >> $GITHUB_ENV
           echo "DB_USERNAME=root" >> $GITHUB_ENV
           echo "DB_PASSWORD=root" >> $GITHUB_ENV
-          # Redis 연결 정보 (localhost 사용!)
           echo "REDIS_HOST=localhost" >> $GITHUB_ENV
           echo "REDIS_PORT=6379" >> $GITHUB_ENV
           echo "REDIS_PASSWORD=" >> $GITHUB_ENV
