@@ -76,5 +76,5 @@ spring:
   batch:
     jdbc:
       # Spring Batch 메타데이터 테이블 자동 생성 (테스트 환경 적용)
-      # ALWAYS: 항상 테이블 생성 (테스트 환경에 적합)
-      initialize-schema: ALWAYS
+      # always: 항상 테이블 생성 (테스트 환경에 적합)
+      initialize-schema: always
