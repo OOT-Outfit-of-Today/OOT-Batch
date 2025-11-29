@@ -74,16 +74,25 @@ jobs:
           echo "REDIS_PASSWORD=" >> $GITHUB_ENV
 
       # ================================================================
-      # MySQL 완전 기동 대기 (핵심)
+      # netcat 설치 (포트 체크용)
       # ================================================================
-      - name: Wait for MySQL to be ready
+      - name: Install netcat
         run: |
-          for i in {1..30}; do
-            echo "⌛ Checking MySQL..."
-            if mysqladmin ping -h "127.0.0.1" -P 3306 --silent; then
-              echo "✅ MySQL is ready"
+          sudo apt-get update
+          sudo apt-get install -y netcat
+
+      # ================================================================
+      # MySQL 완전 기동 대기 (포트 3306 기준)
+      # ================================================================
+      - name: Wait for MySQL to be ready (port 3306)
+        run: |
+          echo "Waiting for MySQL (port 3306) to be fully ready..."
+          for i in {1..40}; do
+            if nc -z 127.0.0.1 3306; then
+              echo "✅ MySQL is fully READY"
               exit 0
             fi
+            echo "⌛ MySQL still starting... retrying..."
             sleep 2
           done
           echo "❌ MySQL did not become ready in time"
