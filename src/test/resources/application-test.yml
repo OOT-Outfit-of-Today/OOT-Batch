@@ -31,6 +31,8 @@ spring:
       hibernate:
         # SQL 쿼리를 포맷팅하여 가독성 향상
         format_sql: true
+        # MySQL 8.x Dialect 설정 (Hibernate가 MySQL 문법을 올바르게 사용하도록 지정)
+        dialect: org.hibernate.dialect.MySQLDialect
     # SQL 로그 출력 설정
     show-sql: true
 
@@ -52,7 +54,7 @@ spring:
       host: ${REDIS_HOST:127.0.0.1}
       # Redis 서버 포트 (환경 변수 또는 기본값 6379)
       port: ${REDIS_PORT:6379}
-      # Redis 비밀번호 (설정되지 않은 경우 빈 문자열)
+      # Redis 비밀번호 (설정되지 않을 경우 빈 문자열)
       password: ${REDIS_PASSWORD:}
       # 연결 타임아웃: 3초
       timeout: 3000ms
@@ -65,7 +67,7 @@ spring:
           max-idle: 10
           # 최소 유휴 커넥션 수
           min-idle: 2
-          # 커넥션 풀에서 커넥션을 기다리는 최대 시간 (-1은 무제한)
+          # 커넥션 풀에서 커넥션을 기다리는 최대 시간 (~1초 무제한)
           max-wait: -1ms
 
   # ============================================
@@ -73,6 +75,6 @@ spring:
   # ============================================
   batch:
     jdbc:
-      # Spring Batch 메타데이터 테이블 자동 초기화
+      # Spring Batch 메타데이터 테이블 자동 생성 (테스트 환경 적용)
       # ALWAYS: 항상 테이블 생성 (테스트 환경에 적합)
       initialize-schema: ALWAYS
