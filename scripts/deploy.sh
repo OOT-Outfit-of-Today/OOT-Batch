@@ -10,10 +10,10 @@ set -euo pipefail
 : "${SPRING_PROFILE:?SPRING_PROFILE required}"
 
 # ===== ECR 경로 파싱 =====
-REG_URI="$(echo "${FULL_URI}" | cut -d/ -f1)"
-REPO_AND_TAG="$(echo "${FULL_URI}" | cut -d/ -f2- )"
-REPO="$(echo "${REPO_AND_TAG}" | rev | cut -d: -f2- | rev)"
-TAG="$(echo "${REPO_AND_TAG}"  | awk -F: '{print $NF}')"
+REG_URI="${FULL_URI%%/*}"
+REPO_AND_TAG="${FULL_URI#*/}"
+REPO="${REPO_AND_TAG%:*}"
+TAG="${REPO_AND_TAG##*:}"
 
 # SSM 코멘트(100자 제한 방어)
 COMMENT="Deploy ${REPO}:${TAG}"
@@ -31,7 +31,7 @@ CMDS=(
   "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${REG_URI}"
   "docker pull ${FULL_URI}"
   "docker stop ${CONTAINER_NAME} || true"
-  "docker rm   ${CONTAINER_NAME} || true"
+  "docker rm -f ${CONTAINER_NAME} || true"
 
   # 로그 디렉토리 생성 및 spring 유저(999:999)에게 권한
   "mkdir -p /app-logs && chown 999:999 /app-logs"
@@ -41,7 +41,7 @@ CMDS=(
   "docker network create oot-network || true"
 
   # Parameter Store에서 Redis 비밀번호 가져오기
-  "REDIS_PASSWORD=\$(aws ssm get-parameter --name /config/dev/REDIS_PASSWORD --with-decryption --query Parameter.Value --output text --region ${AWS_REGION})"
+  "REDIS_PASSWORD=\$(aws ssm get-parameter --name /config/${SPRING_PROFILE}/REDIS_PASSWORD --with-decryption --query Parameter.Value --output text --region ${AWS_REGION})"
 
   # Redis 컨테이너 실행
   # 중지된 컨테이너가 있으면 시작, 없으면 새로 생성

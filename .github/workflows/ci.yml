@@ -99,6 +99,24 @@ jobs:
           exit 1
 
       # ================================================================
+      # Debug: MySQL 직접 접속 테스트
+      # ================================================================
+      - name: Debug DB connection (MySQL CLI)
+        run: |
+          echo "🔍 Checking DB env vars in runner..."
+          echo "DB_HOST=$DB_HOST"
+          echo "DB_PORT=$DB_PORT"
+          echo "DB_NAME=$DB_NAME"
+          echo "DB_USERNAME=$DB_USERNAME"
+
+          echo "🔍 Installing mysql-client..."
+          sudo apt-get update
+          sudo apt-get install -y mysql-client
+
+          echo "🔍 Trying to connect to MySQL and list databases..."
+          mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" -e "SHOW DATABASES;"
+
+      # ================================================================
       # 빌드 및 테스트 실행(단계별 디버깅)
       # ================================================================
       - name: Build without tests (컴파일만)
