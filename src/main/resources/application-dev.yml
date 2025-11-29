@@ -1,28 +1,37 @@
+# ================================================================
+# dev 프로파일 전용 설정 (Batch)
+# ================================================================
 spring:
+  # ================================================================
+  # 데이터베이스 연결 설정 (dev)
+  # ================================================================
   datasource:
+    # 예: jdbc:mysql://dev-host:3306/oot_batch
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: none   # dev 환경에서도 스키마 변경 금지
-    properties:
-      hibernate:
-        format_sql: true
+      # dev에서도 스키마는 손대지 않음
+      ddl-auto: none
 
+  # Spring Batch 메타데이터 테이블 자동 생성 (필요하다면)
   batch:
     jdbc:
-      initialize-schema: always    # schema.sql로 메타테이블 초기화
+      initialize-schema: always
+
   sql:
     init:
+      # dev에서도 초기 데이터 항상 실행한다면 유지
       mode: always
 
-
+  # ================================================================
+  # Redis 연결 설정 (dev)
+  # ================================================================
   data:
     redis:
-      host: ${REDIS_HOST:127.0.0.1}
+      host: ${REDIS_HOST}
       port: ${REDIS_PORT:6379}
       password: ${REDIS_PASSWORD}
       timeout: 3000ms
@@ -32,3 +41,11 @@ spring:
           max-idle: 10
           min-idle: 2
           max-wait: -1ms
+
+# 필요하면 dev 에서는 포트나 internal.api 도 override 가능
+# server:
+#   port: 8081
+#
+# internal:
+#   api:
+#     main-server-url: https://dev-main.your-domain.com

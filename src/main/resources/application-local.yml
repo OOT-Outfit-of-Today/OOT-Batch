@@ -1,12 +1,47 @@
+# ================================================================
+# local 프로파일 전용 설정 (Batch)
+# ================================================================
 spring:
+  # ================================================================
+  # 로컬 DB 연결 설정
+  # ================================================================
   datasource:
-    url: jdbc:mysql://localhost:3306/${DB_NAME}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 로컬 MySQL (docker-compose 또는 직접 설치)
+    url: jdbc:mysql://${DB_HOST:${DB_HOST:localhost}}:${DB_PORT:3306}/${DB_NAME:oot}?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:1234}
 
+  jpa:
+    hibernate:
+      # 로컬에서 스키마 자동 생성/삭제하고 싶으면 create-drop 등으로 변경 가능
+      ddl-auto: update
+
+  # SQL 초기화(data.sql) 실행 여부 (공통에서 already always 이면 생략 가능)
+  sql:
+    init:
+      mode: always
+
+  # ================================================================
+  # 로컬 Redis 연결 설정
+  # ================================================================
   data:
     redis:
       host: ${REDIS_HOST:127.0.0.1}
       port: ${REDIS_PORT:6379}
       password: ${REDIS_PASSWORD}
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 2
+          max-wait: -1ms
+
+# 로컬에서는 기본적으로 8081 사용 (공통에서 이미 지정됨)
+# server:
+#   port: 8081
+
+internal:
+  api:
+    # 로컬 메인 서버와 연동
+    main-server-url: ${MAIN_SERVER_URL:http://localhost:8080}
