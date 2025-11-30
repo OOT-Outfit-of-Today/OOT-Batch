@@ -62,9 +62,6 @@ CMDS=(
     -v /app-logs:/app-logs \\
     -e SPRING_PROFILES_ACTIVE=${SPRING_PROFILE} \\
     -e AWS_REGION=${AWS_REGION} \\
-    -e REDIS_HOST=redis \\
-    -e REDIS_PORT=6379 \\
-    -e REDIS_PASSWORD=\$REDIS_PASSWORD \\
     ${FULL_URI}"
 )
 
