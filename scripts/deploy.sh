@@ -41,9 +41,9 @@ CMDS=(
   "docker network create oot-network || true"
 
   # Parameter Store에서 Redis 비밀번호 가져오기
-  "REDIS_PASSWORD=\$(aws ssm get-parameter --name /config/${SPRING_PROFILE}/REDIS_PASSWORD --with-decryption --query Parameter.Value --output text --region ${AWS_REGION})"
+  "REDIS_PASSWORD=\$(aws ssm get-parameter --name /config/${SPRING_PROFILE}/REDIS_PASSWORD --with-decryption --query Parameter.Value --output text --region ${AWS_REGION}) || { echo 'Error: Failed to retrieve REDIS_PASSWORD from Parameter Store.' >&2; exit 1; }"
+  "[ -n \"\$REDIS_PASSWORD\" ] || { echo 'Error: REDIS_PASSWORD is empty.' >&2; exit 1; }"  # Redis 컨테이너 실행
 
-  # Redis 컨테이너 실행
   # 중지된 컨테이너가 있으면 시작, 없으면 새로 생성
   # 컨테이너 이름: redis(Spring에서 호스트명으로 사용)
   "docker start redis 2>/dev/null || docker run -d \\
