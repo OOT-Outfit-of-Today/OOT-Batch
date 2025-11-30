@@ -22,16 +22,14 @@ spring:
       mode: always
 
   # ================================================================
-  # 로컬 Redis 연결 설정
+  # Redis 연결 설정(로컬용 Lettuce 연결 풀)
   # ================================================================
   data:
     redis:
-      host: ${REDIS_HOST:127.0.0.1}
-      port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD}
       timeout: 3000ms
       lettuce:
         pool:
+          # 로컬은 dev보다 적은 연결 수 사용
           max-active: 8
           max-idle: 8
           min-idle: 2

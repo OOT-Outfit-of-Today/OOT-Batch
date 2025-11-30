@@ -27,19 +27,22 @@ spring:
       mode: always
 
   # ================================================================
-  # Redis 연결 설정 (dev)
+  # Redis 연결 설정 추가(Lettuce 연결 풀)
+  # host, port, password는 RedisConfig가 환경변수에서 직접 읽음
   # ================================================================
   data:
     redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD}
+      # Redis 연결 타임아웃
       timeout: 3000ms
       lettuce:
         pool:
+          # 최대 활성 연결 수
           max-active: 10
+          # 유휴 상태 최대 연결 수
           max-idle: 10
+          # 유휴 상태 최소 연결 수(미리 생성)
           min-idle: 2
+          # 연결 대기 시간(-1: 무제한)
           max-wait: -1ms
 
 # 필요하면 dev 에서는 포트나 internal.api 도 override 가능
