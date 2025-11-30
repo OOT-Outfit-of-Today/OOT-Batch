@@ -54,7 +54,7 @@ spring:
   # ================================================================
   data:
     redis:
-      # JPA Repository 자동 생성 비활성화(수동 설정 사용)
+      # Redis Repository 자동 생성 비활성화(수동 설정 사용)
       repositories:
         enabled: false
 
